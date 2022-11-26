@@ -20,8 +20,10 @@ class ArticlesController extends AppController
 
     public function index()
     {
+        $user = $this->Authentication->getIdentity();
+        $loginId = $this->getRequest()->getSession()->read('loginId');
         $articles = $this->Paginator->paginate($this->Articles->find());
-        $this->set(compact('articles'));
+        $this->set(compact('user', 'loginId', 'articles'));
     }
 
     public function view($slug = null)

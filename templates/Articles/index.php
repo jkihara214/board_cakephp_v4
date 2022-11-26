@@ -1,3 +1,8 @@
+<?php if (isset($loginId)): ?>
+<p><?= $this->Html->link("ログアウト", ['controller' => 'users', 'action' => 'logout']) ?></p>
+<?php else: ?>
+<p><?= $this->Html->link("ログイン", ['controller' => 'users', 'action' => 'login']) ?></p>
+<?php endif; ?>
 <h1>記事一覧</h1>
 <p><?= $this->Html->link("記事の追加", ['action' => 'add']) ?></p>
 <table>

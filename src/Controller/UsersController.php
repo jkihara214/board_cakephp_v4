@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Cookie\Cookie;
+use DateTime;
+use Cake\Http\Cookie\CookieCollection;
+
 /**
  * Users Controller
  *
@@ -25,6 +29,9 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // POST, GET を問わず、ユーザーがログインしている場合はリダイレクトします
         if ($result && $result->isValid()) {
+            $user = $this->Authentication->getIdentity();
+            $session = $this->getRequest()->getSession()->write('loginId', $user['id']);
+
             // redirect to /articles after login success
             $redirect = $this->request->getQuery('redirect', [
                 'controller' => 'Articles',
@@ -35,7 +42,7 @@ class UsersController extends AppController
         }
         // ユーザーが submit 後、認証失敗した場合は、エラーを表示します
         if ($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error(__('Invalid username or password'));
+            $this->Flash->error(__('Invalid email or password'));
         }
     }
 
@@ -44,8 +51,9 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // POST, GET を問わず、ユーザーがログインしている場合はリダイレクトします
         if ($result && $result->isValid()) {
+            $name = $this->getRequest()->getSession()->destroy();
             $this->Authentication->logout();
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            return $this->redirect(['controller' => 'Articles', 'action' => 'index']);
         }
     }
 
