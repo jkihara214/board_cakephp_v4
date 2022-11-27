@@ -22,7 +22,7 @@ class ArticlesController extends AppController
     {
         $user = $this->Authentication->getIdentity();
         $loginId = $this->getRequest()->getSession()->read('loginId');
-        $articles = $this->Paginator->paginate($this->Articles->find());
+        $articles = $this->Paginator->paginate($this->Articles->find()->contain('Users'));
         $this->set(compact('user', 'loginId', 'articles'));
     }
 

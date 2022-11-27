@@ -20,6 +20,7 @@ class ArticlesTable extends Table
             'joinTable' => 'articles_tags',
             'dependent' => true
         ]);
+        $this->belongsTo('Users');
     }
 
     public function beforeSave(EventInterface $event, $entity, $options)
