@@ -148,4 +148,13 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function detail($id = null)
+    {
+        $userDetail = $this->Users
+            ->findById($id)
+            ->firstOrFail();
+        $user = $this->Authentication->getIdentity();
+        $this->set(compact('userDetail', 'user'));
+    }
 }

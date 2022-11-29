@@ -28,7 +28,7 @@ class ArticlesController extends AppController
 
     public function view($slug = null)
     {
-    $article = $this->Articles
+        $article = $this->Articles
             ->findBySlug($slug)
             ->contain('Tags')
             ->firstOrFail();

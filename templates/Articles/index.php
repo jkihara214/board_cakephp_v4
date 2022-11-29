@@ -20,7 +20,7 @@
 <?php foreach ($articles as $article): ?>
     <tr>
         <td>
-            <?= $this->Html->link($article->user->name, ['action' => 'view', $article->slug]) ?>
+            <?= $this->Html->link($article->user->name, ['controller' => 'users', 'action' => 'detail', $article->user->id]) ?>
         </td>
         <td>
             <?= $this->Html->link($article->title, ['action' => 'view', $article->slug]) ?>
