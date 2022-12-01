@@ -20,10 +20,9 @@ class ArticlesController extends AppController
 
     public function index()
     {
-        $user = $this->Authentication->getIdentity();
-        $loginId = $this->getRequest()->getSession()->read('loginId');
+        $loginDetail = $this->Authentication->getIdentity();
         $articles = $this->Paginator->paginate($this->Articles->find()->contain('Users'));
-        $this->set(compact('user', 'loginId', 'articles'));
+        $this->set(compact('loginDetail', 'articles'));
     }
 
     public function view($slug = null)
@@ -61,9 +60,11 @@ class ArticlesController extends AppController
 
     public function edit($slug)
     {
+        $loginId = $this->Authentication->getIdentity()->id;
         $article = $this->Articles
             ->findBySlug($slug)
             ->contain('Tags')   // 関連づけられた Tags を読み込む
+            ->contain('Users')
             ->firstOrFail();
         if ($this->request->is(['post', 'put'])) {
             $this->Articles->patchEntity($article, $this->request->getData());
@@ -79,7 +80,7 @@ class ArticlesController extends AppController
 
         // ビューコンテキストに tags をセット
         $this->set('tags', $tags);
-
+        $this->set('loginId', $loginId);
         $this->set('article', $article);
     }
 
@@ -87,11 +88,15 @@ class ArticlesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
 
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
-        if ($this->Articles->delete($article)) {
-            $this->Flash->success(__('The {0} article has been deleted.', $article->title));
-            return $this->redirect(['action' => 'index']);
+        $loginId = $this->Authentication->getIdentity()->id;
+        $article = $this->Articles->findBySlug($slug)->contain('Users')->firstOrFail();
+        if ($loginId === $article->user->id) {
+            if ($this->Articles->delete($article)) {
+                $this->Flash->success(__('The {0} article has been deleted.', $article->title));
+                return $this->redirect(['action' => 'index']);
+            }
         }
+        return $this->redirect(['action' => 'index']);
     }
 
     public function tags()

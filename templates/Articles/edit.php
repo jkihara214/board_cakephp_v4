@@ -1,3 +1,9 @@
+<?php
+if ($loginId !== $article->user->id):
+    header('Location: http://jk-study-php.com/board_cakephp/articles');
+    exit;
+endif;
+?>
 <h1>記事の編集</h1>
 <?php
     echo $this->Form->create($article);

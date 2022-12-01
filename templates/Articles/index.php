@@ -1,5 +1,5 @@
-<?php if (isset($loginId)): ?>
-<p><?= $user->name . 'としてログイン中'; ?></p>
+<?php if (isset($loginDetail->id)):?>
+<p><?= $loginDetail->name . 'としてログイン中'; ?></p>
 <p><?= $this->Html->link("ログアウト", ['controller' => 'users', 'action' => 'logout']) ?></p>
 <?php else: ?>
 <p><?= $this->Html->link("ログイン", ['controller' => 'users', 'action' => 'login']) ?></p>
@@ -29,11 +29,17 @@
             <?= $article->created->format(DATE_RFC850) ?>
         </td>
         <td>
+            <?php
+            if (isset($loginDetail->id) && $loginDetail->id === $article->user->id):
+            ?>
             <?= $this->Html->link('編集', ['action' => 'edit', $article->slug]) ?>
             <?= $this->Form->postLink(
                 '削除',
                 ['action' => 'delete', $article->slug],
                 ['confirm' => 'よろしいですか?'])
+            ?>
+            <?php
+            endif;
             ?>
         </td>
     </tr>
