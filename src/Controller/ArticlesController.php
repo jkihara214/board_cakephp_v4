@@ -37,11 +37,9 @@ class ArticlesController extends AppController
     public function add()
     {
         $article = $this->Articles->newEmptyEntity();
+        $loginId = $this->Authentication->getIdentity()->id;
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
-
-            // user_id の決め打ちは一時的なもので、あとで認証を構築する際に削除されます。
-            $article->user_id = 1;
 
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('Your article has been saved.'));
@@ -54,7 +52,7 @@ class ArticlesController extends AppController
 
         // ビューコンテキストに tags をセット
         $this->set('tags', $tags);
-
+        $this->set('loginId', $loginId);
         $this->set('article', $article);
     }
 
