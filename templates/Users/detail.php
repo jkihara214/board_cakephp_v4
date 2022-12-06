@@ -39,11 +39,16 @@
     <tr>
         <th>操作</th>
         <td>
-            <?php
-            if($userDetail->id === $user->id):
-                echo $this->Html->link('編集');
-            endif;
-            ?>
+            <div>
+                <?php
+                if($userDetail->id === $user->id):
+                    echo $this->Html->link('編集', ['action' => 'edit', $user->id]);
+                endif;
+                ?>
+            </div>
+            <div>
+                <?= $this->Html->link('戻る', ['controller' => 'Articles', 'action' => 'index']); ?>
+            </div>
         </td>
     </tr>
 
