@@ -20,12 +20,12 @@
             -->
     <div class="column-responsive column-80">
         <div class="users form content">
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create($user, ['type' => 'file']) ?>
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
                 <?php
                     echo $this->Form->control('email');
-                    echo $this->Form->control('image');
+                    echo $this->Form->control('image', ['type' => 'file']);
                     echo $this->Form->control('comment');
                 ?>
             </fieldset>

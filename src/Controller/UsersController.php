@@ -118,7 +118,12 @@ class UsersController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $userDetail = $this->request->getData();
+            $image = $userDetail['image'];
+            $userDetail['image'] = date("YmdHis") . $image->getClientFilename();
+            $user = $this->Users->patchEntity($user, $userDetail);
+            $filePath = '/var/www/html/board_cakephp/webroot/img/userIcon/' . date("YmdHis") . $image->getClientFilename();
+            $image->moveTo($filePath);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
