@@ -120,10 +120,19 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userDetail = $this->request->getData();
             $image = $userDetail['image'];
-            $userDetail['image'] = date("YmdHis") . $image->getClientFilename();
-            $user = $this->Users->patchEntity($user, $userDetail);
-            $filePath = '/var/www/html/board_cakephp/webroot/img/userIcon/' . date("YmdHis") . $image->getClientFilename();
-            $image->moveTo($filePath);
+            $fileSize = $image->getSize();
+            $fileType = $image->getClientMediaType();
+            if ($fileSize !== 0 && ($fileType === 'image/png' || $fileType === 'image/jpeg')) {
+                $oldIcon = $user['image'];
+                // 新規画像の保存
+                $userDetail['image'] = date("YmdHis") . $image->getClientFilename();
+                $user = $this->Users->patchEntity($user, $userDetail);
+                $filePath = '/var/www/html/board_cakephp/webroot/img/userIcon/' . date("YmdHis") . $image->getClientFilename();
+                $image->moveTo($filePath);
+                // 古い画像の削除
+                $oldFile = '/var/www/html/board_cakephp/webroot/img/userIcon/' . $oldIcon;
+                unlink($oldFile);
+            }
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 

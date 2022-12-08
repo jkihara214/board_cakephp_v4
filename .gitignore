@@ -6,6 +6,7 @@
 /logs/*
 /tmp/*
 /vendor/*
+/webroot/img/userIcon/*
 
 # OS generated files #
 ######################
