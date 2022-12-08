@@ -11,7 +11,7 @@
         <td>
             <?php
             if(isset($userDetail->image)):
-                echo $userDetail->image;
+                echo $this->Html->image('userIcon/' . $userDetail->image, array('width'=>'200', 'height'=>'200'));
             else:
                 echo '未登録';
             endif;
