@@ -20,7 +20,7 @@ class UsersController extends AppController
         parent::beforeFilter($event);
         // 認証を必要としないログインアクションを構成し、
         // 無限リダイレクトループの問題を防ぎます
-        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+        $this->Authentication->addUnauthenticatedActions(['login', 'add', 'password']);
     }
 
     public function login()
@@ -170,5 +170,13 @@ class UsersController extends AppController
             ->firstOrFail();
         $user = $this->Authentication->getIdentity();
         $this->set(compact('userDetail', 'user'));
+    }
+
+    public function password()
+    {
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $this->Flash->success(__('入力されたメールアドレス宛にパスワード再設定メールを送信しました。'));
+        }
     }
 }

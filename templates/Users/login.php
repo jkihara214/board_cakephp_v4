@@ -10,5 +10,6 @@
     <?= $this->Form->submit(__('Login')); ?>
     <?= $this->Form->end() ?>
 
-    <?= $this->Html->link("Add User", ['action' => 'add']) ?>
+    <p><?= $this->Html->link("新規登録", ['action' => 'add']) ?></p>
+    <p><?= $this->Html->link("パスワードを忘れた方", ['action' => 'password']) ?></p>
 </div>
