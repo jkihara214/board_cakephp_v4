@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Http\Cookie\Cookie;
+use Cake\Mailer\Mailer;
 use DateTime;
+use Cake\Http\Cookie\Cookie;
 use Cake\Http\Cookie\CookieCollection;
 
 /**
@@ -175,7 +176,25 @@ class UsersController extends AppController
     public function password()
     {
         if ($this->request->is('post')) {
-            $data = $this->request->getData();
+            $email = $this->request->getData('email');
+            var_dump($email);
+            $user = $this->Users
+                ->findByEmail($email)
+                ->contain(['Repasswords'])
+                ->first();
+            if (isset($user)) {
+                // メール送信
+               // $email = new Mailer('default');
+               // $email->setFrom(['jkihara214@gmail.com' => 'My Site'])
+               //     ->setTo('jkihara214@gmail.com')
+               //     ->setSubject('パスワードの再設定');
+               // $email->deliver();
+
+            }
+            $repass = $user?->repassword;
+            if (isset($repass) && $repass['delete_flg'] === false) {
+
+            }
             $this->Flash->success(__('入力されたメールアドレス宛にパスワード再設定メールを送信しました。'));
         }
     }
