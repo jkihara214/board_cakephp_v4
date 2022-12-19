@@ -120,6 +120,7 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $userDetail = $this->request->getData();
+            $user->comment = $userDetail['comment'];
             $image = $userDetail['image'];
             $fileSize = $image->getSize();
             $fileType = $image->getClientMediaType();
