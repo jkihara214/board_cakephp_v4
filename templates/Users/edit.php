@@ -24,7 +24,6 @@
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
                 <?php
-                    echo $this->Form->control('email');
                     echo $this->Form->control('image', ['type' => 'file']);
                     echo $this->Form->control('comment');
                 ?>
